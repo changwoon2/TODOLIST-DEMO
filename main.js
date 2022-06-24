@@ -11,6 +11,7 @@ let addButton = document.getElementById("add-button");
 let tabs = document.querySelectorAll(".task-tabs div");
 let taskList = [];
 let mode = "";
+let filterList = [];
 addButton.addEventListener("click", addTask);
 console.log(tabs);
 
@@ -32,22 +33,29 @@ function addTask() {
 }
 
 function render() {
+  let list = [];
+  if (mode == "all") {
+    list == taskList;
+  } else if (mode == "ongoing") {
+    list = filterList;
+  }
+
   let resultHTML = "";
-  for (let i = 0; i < taskList.length; i++) {
-    if (taskList[i].isComplete == true) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].isComplete == true) {
       resultHTML += `<div class="task">
-      <div class="task-done">${taskList[i].taskContent}</div>
+      <div class="task-done">${list[i].taskContent}</div>
       <div>
-      <button onclick="toggleComplete('${taskList[i].id}')">Check</button>
-      <button onclick="deleteTask('${taskList[i].id}')">Delete</button>
+      <button onclick="toggleComplete('${list[i].id}')">Check</button>
+      <button onclick="deleteTask('${list[i].id}')">Delete</button>
       </div>
       </div>`;
     } else {
       resultHTML += `<div class="task">
-    <div>${taskList[i].taskContent}</div>
+    <div>${list[i].taskContent}</div>
     <div>
-    <button onclick="toggleComplete('${taskList[i].id}')">Check</button>
-    <button onclick="deleteTask('${taskList[i].id}')">Delete</button>
+    <button onclick="toggleComplete('${list[i].id}')">Check</button>
+    <button onclick="deleteTask('${list[i].id}')">Delete</button>
     </div>
     </div>`;
     }
@@ -79,7 +87,7 @@ function deleteTask(id) {
 
 function filter(event) {
   mode = event.target.id;
-  let filterList = [];
+  filterList = [];
   if (mode == "all") {
     render();
   } else if (mode == "ongoing") {
@@ -88,9 +96,9 @@ function filter(event) {
         filterList.push(taskList[i]);
       }
     }
-    taskList = filterList;
     render();
   }
+  console.log(filterList);
 }
 
 function randomIDGenerate() {
