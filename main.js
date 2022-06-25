@@ -10,10 +10,9 @@ let taskInput = document.getElementById("task-input");
 let addButton = document.getElementById("add-button");
 let tabs = document.querySelectorAll(".task-tabs div");
 let taskList = [];
-let mode = "";
 let filterList = [];
+let mode = "all";
 addButton.addEventListener("click", addTask);
-console.log(tabs);
 
 for (let i = 1; i < tabs.length; i++) {
   tabs[i].addEventListener("click", function (event) {
@@ -60,7 +59,6 @@ function render() {
     </div>`;
     }
   }
-
   document.getElementById("task-board").innerHTML = resultHTML;
 }
 
@@ -87,20 +85,17 @@ function deleteTask(id) {
 
 function filter(event) {
   mode = event.target.id;
-  filterList = [];
+  let filterList = [];
   if (mode == "all") {
     render();
   } else if (mode == "ongoing") {
     for (let i = 0; i < taskList.length; i++) {
-      if (taskList[i].isComplete == false) {
-        filterList.push(taskList[i]);
-      }
+      if (taskList[i].isComplete == false) filterList.push(taskList[i]);
     }
-    render();
   }
-  console.log(filterList);
+  render();
 }
-
+console.log(filterList);
 function randomIDGenerate() {
   return "_" + Math.random().toString(36).substr(2, 9);
 }
